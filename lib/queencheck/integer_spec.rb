@@ -1,0 +1,3 @@
+
+describe Integer do
+end

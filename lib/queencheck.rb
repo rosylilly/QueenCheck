@@ -1,7 +1,5 @@
 
-module QueenCheck
-  def test
+require 'queencheck/core'
+require 'queencheck/arbitrary'
 
-  end
-end
-
+require 'queencheck/integer'

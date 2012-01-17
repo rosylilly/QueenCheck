@@ -1,11 +1,10 @@
 require 'rubygems'
 require 'spork'
+require 'rspec'
 
 Spork.prefork do
-  require 'rspec/autorun'
-  require 'autotest/rspec2'
-  require 'queencheck'
 end
 
 Spork.each_run do
+  Dir::glob('./lib/**/*.rb'){|f| load f }
 end
