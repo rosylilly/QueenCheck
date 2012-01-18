@@ -17,7 +17,10 @@ module QueenCheck
     def run(config = QueenCheck::Config.new, &block)
       config = config.kind_of?(Hash) ? QueenCheck::Config.new(config) : config
 
+      examples, passed, failures, exception = 0, 0, 0, 0
+
       config.count.times do | n |
+        examples += 1
         range = (n+0.0) / config.count
         arguments = []
         @types.each do | type |
@@ -36,8 +39,29 @@ module QueenCheck
           print "#{@types[i]}: #{n}"
           print "\n"
         end if config.verbose?
-        block.call(result, arguments, error)
+
+        test_result = block.call(result, arguments, error)
+
+        unless error
+          case test_result
+          when true
+            passed += 1
+          when false
+            failures += 1
+          end
+        else
+          exception += 1
+          break
+        end
+
       end
+
+      return {
+        examples: examples,
+        passed: passed,
+        failures: failures,
+        exception: exception
+      }
     end
   end
 end

@@ -16,3 +16,7 @@ module QueenCheck
     end
   end
 end
+
+class BasicObject
+  def arbitrary?; false; end
+end
