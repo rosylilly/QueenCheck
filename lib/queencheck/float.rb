@@ -3,7 +3,7 @@ require 'queencheck/arbitrary'
 class Float
   extend QueenCheck::Arbitrary
 
-  @@bound = 50
+  @@bound = 25
 
   set_arbitrary do |seed|
     if seed == 0
@@ -14,7 +14,9 @@ class Float
       end
       base = ((@@bound * seed).ceil).to_f
       max = 10.0 ** base
-      rand(max).to_f / (10.0 ** (base/2.0)) * (rand(2).zero? ? 1.0 : -1.0)
+      num = rand(max)
+      nod = num.to_s.length
+      num.to_f / (10 ** ((rand(nod / 2) + nod / 2) / 2)) * (rand(2).zero? ? 1.0 : -1.0)
     end
   end
 end
