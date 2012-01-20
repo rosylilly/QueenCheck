@@ -24,7 +24,7 @@ class String
       charset = (0x00 ... 0x7f).to_a
       charset += (0x80 ... 0x7ff).to_a
       charset += (0x800 ... 0x7fff).to_a
-    elsif seed < 1
+    elsif seed <= 1
       charset = (0x00 ... 0x7f).to_a
       charset += (0x80 ... 0x7ff).to_a
       charset += (0x800 ... 0x7fff).to_a
