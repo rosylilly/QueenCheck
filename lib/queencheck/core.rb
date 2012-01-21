@@ -4,7 +4,7 @@ module QueenCheck
   def new(*args)
     QueenCheck::Core.new(*args)
   end
-  
+
   module_function :new
 
   class Core
