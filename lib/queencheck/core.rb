@@ -1,27 +1,20 @@
 require 'queencheck/config'
 
 module QueenCheck
-  def new(*args)
+  def self.new(*args)
     QueenCheck::Core.new(*args)
   end
-  
-  module_function :new
 
   class Core
     def initialize(instance, method, *types)
       @instance = instance
       @method = method.respond_to?(:call) ? method : instance.method(method.to_s.to_sym)
-      @types = []
-      types.each do | type |
+      @types = types.map do | type |
         if type.respond_to?(:arbitrary?) && type.arbitrary?
-          @types << type
-          next
+          next type
         elsif types.kind_of?(Symbol)
           type = QueenCheck::Arbitrary::Instance.get_by_id(type)
-          unless type.nil?
-            @types << type
-            next
-          end
+          next type if type
         end
         raise QueenCheck::Arbitrary::NotQueenCheckArbitrary, "`#{type}` is not implemented arbitrary"
       end
@@ -39,9 +32,11 @@ module QueenCheck
           arguments.push(type.arbitrary(range))
         end
 
-        arguments.each_with_index do | n, i |
-          puts "#{@types[i]}: #{n}"
-        end if config.verbose?
+        if config.verbose?
+          arguments.each_with_index do | n, i |
+            puts "#{@types[i]}: #{n}"
+          end
+        end
 
         result, error = nil, nil
         begin
@@ -74,7 +69,6 @@ module QueenCheck
         else
           stats.add_exception(error)
         end
-
       end
 
       return stats
@@ -99,7 +93,7 @@ module QueenCheck
         @failures = n
       end
 
-      def exceptions; return @exceptions.length; end
+      def exceptions; @exceptions.length; end
 
       def add_exception(e)
         @exceptions.push(e)
