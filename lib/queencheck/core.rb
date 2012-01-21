@@ -54,7 +54,14 @@ module QueenCheck
         begin
           test_result = block.call(result, arguments, error)
         rescue => e
+          error = e
           is_exception = true
+        end
+
+        if config.verbose?
+          print "#{@instance.kind_of?(Class) ? @instance.name : @instance.class.name} \##{@method.respond_to?(:name) ? @method.name : @method.class} ("
+          print @types.map{|type| "#{type.name}" }.join(', ') + ')'
+          puts " => #{is_exception ? error.class : test_result}"
         end
 
         unless is_exception
@@ -65,7 +72,7 @@ module QueenCheck
             stats.failures += 1
           end
         else
-          stats.add_exception(e)
+          stats.add_exception(error)
         end
 
       end
