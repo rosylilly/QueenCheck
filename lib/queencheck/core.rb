@@ -39,9 +39,11 @@ module QueenCheck
           arguments.push(type.arbitrary(range))
         end
 
-        arguments.each_with_index do | n, i |
-          puts "#{@types[i]}: #{n}"
-        end if config.verbose?
+        if config.verbose?
+          arguments.each_with_index do | n, i |
+            puts "#{@types[i]}: #{n}"
+          end
+        end
 
         result, error = nil, nil
         begin
