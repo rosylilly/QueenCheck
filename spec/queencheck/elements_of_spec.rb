@@ -13,9 +13,9 @@ describe QueenCheck::ElementsOf do
   end
 
   it 'named type' do
-    named = QueenCheck::ElementsOf(:name, ['test', 'sample'])
+    named = QueenCheck::ElementsOf(:names, ['test', 'sample'])
 
     named.should be_kind_of(QueenCheck::ElementsOf)
-    QueenCheck::ElementsOf(:name).should eq(named)
+    QueenCheck::ElementsOf(:names).should eq(named)
   end
 end
