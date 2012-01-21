@@ -17,5 +17,6 @@ describe QueenCheck::ElementsOf do
 
     named.should be_kind_of(QueenCheck::ElementsOf)
     QueenCheck::ElementsOf(:names).should eq(named)
+    QueenCheck::Arbitrary(:elements_of_names).should eq(named)
   end
 end

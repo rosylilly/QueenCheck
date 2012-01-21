@@ -16,7 +16,7 @@ describe QueenCheck::Arbitrary do
 
   describe 'Original Arbitrary' do
     it 'new' do
-      arb = QueenCheck::Arbitrary.generate do | seed |
+      arb = QueenCheck::Arbitrary() do | seed |
         if seed < 0.5
           10**20
         else
@@ -27,6 +27,12 @@ describe QueenCheck::Arbitrary do
       arb.arbitrary?.should be_true
       arb.arbitrary(0).should eq(10**20)
       arb.arbitrary(1).should eq("")
+    end
+
+    it 'named search' do
+      arb = QueenCheck::Arbitrary(:sample) {}
+
+      QueenCheck::Arbitrary(:sample).should eq(arb)
     end
   end
 end

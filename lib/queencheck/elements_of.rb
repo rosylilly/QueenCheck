@@ -37,6 +37,7 @@ module QueenCheck
       if name
         @name = name.to_s.to_sym
         @@instances[@name] = self
+        QueenCheck::Arbitrary::Instance.collection["elements_of_#{@name}".to_sym] = self
       end
     end
   end

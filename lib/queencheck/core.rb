@@ -11,7 +11,20 @@ module QueenCheck
     def initialize(instance, method, *types)
       @instance = instance
       @method = method.respond_to?(:call) ? method : instance.method(method.to_s.to_sym)
-      @types = types
+      @types = []
+      types.each do | type |
+        if type.respond_to?(:arbitrary?) && type.arbitrary?
+          @types << type
+          next
+        elsif types.kind_of?(Symbol)
+          type = QueenCheck::Arbitrary::Instance.get_by_id(type)
+          unless type.nil?
+            @types << type
+            next
+          end
+        end
+        raise QueenCheck::Arbitrary::NotQueenCheckArbitrary, "`#{type}` is not implemented arbitrary"
+      end
     end
 
     def run(config = QueenCheck::Config.new, &block)

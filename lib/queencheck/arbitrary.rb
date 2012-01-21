@@ -1,5 +1,15 @@
 
 module QueenCheck
+  class << self
+    def Arbitrary(name = nil, &block)
+      if block.nil? && !name.nil?
+        return QueenCheck::Arbitrary::Instance.get_by_id(name)
+      else
+        return QueenCheck::Arbitrary::Instance.new(name, &block)
+      end
+      nil
+    end
+  end
   module Arbitrary
     class NotQueenCheckArbitrary < StandardError; end
 
@@ -15,16 +25,21 @@ module QueenCheck
       end
     end
 
-    def generate(&block)
-      QueenCheck::Arbitrary::Instance.new(&block)
-    end
-    module_function :generate
-
     class Instance
-      def initialize(&block)
+      @@collection = {}
+      def self.get_by_id(name); return @@collection[name.to_s.to_sym]; end
+      def self.collection=(c); @@collection = c; end
+      def self.collection; @@collection; end
+
+      def initialize(name = nil, &block)
         raise ArgumentError, "require block" if block.nil?
         @arbitrary_proc = block
+        @name = name.to_s.to_sym unless name.nil?
+        unless @name.nil?
+          @@collection[@name] = self
+        end
       end
+      attr_reader :name
 
       def arbitrary?; true; end
 
