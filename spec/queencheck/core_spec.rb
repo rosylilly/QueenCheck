@@ -1,6 +1,6 @@
 describe QueenCheck do
   before(:each) do
-    @checker = QueenCheck.new(3, :+, Float)
+    @checker = QueenCheck.new(3, :+, Integer)
   end
 
   it 'quick test' do

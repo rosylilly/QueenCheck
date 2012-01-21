@@ -13,5 +13,21 @@ describe QueenCheck::Arbitrary do
       end
     end
   end
+
+  describe 'Original Arbitrary' do
+    it 'new' do
+      arb = QueenCheck::Arbitrary.generate do | seed |
+        if seed < 0.5
+          10**20
+        else
+          ""
+        end
+      end
+
+      arb.arbitrary?.should be_true
+      arb.arbitrary(0).should eq(10**20)
+      arb.arbitrary(1).should eq("")
+    end
+  end
 end
 
