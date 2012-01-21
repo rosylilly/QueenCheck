@@ -1,11 +1,9 @@
 require 'queencheck/config'
 
 module QueenCheck
-  def new(*args)
+  def self.new(*args)
     QueenCheck::Core.new(*args)
   end
-
-  module_function :new
 
   class Core
     def initialize(instance, method, *types)
