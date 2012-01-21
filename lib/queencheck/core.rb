@@ -63,10 +63,9 @@ module QueenCheck
           stats.add_exception(e)
           break
         else
-          case test_result
-          when true
+          if test_result
             stats.passed += 1
-          when false
+          else
             stats.failures += 1
           end
         end
