@@ -17,51 +17,78 @@ module QueenCheck
     def run(config = QueenCheck::Config.new, &block)
       config = config.kind_of?(Hash) ? QueenCheck::Config.new(config) : config
 
-      examples, passed, failures, exception = 0, 0, 0, 0
+      stats = QueenCheck::Core::Result.new(config.count)
 
       config.count.times do | n |
-        examples += 1
-        range = (n+0.0) / config.count
+        range = n.to_f / config.count
         arguments = []
         @types.each do | type |
           arguments.push(type.arbitrary(range))
         end
 
-        result, error = nil, false
-        begin
-          result = @method.call(*arguments)
-        rescue => e
-          result = e
-          error = true
-        end
-
         arguments.each_with_index do | n, i |
-          print "#{@types[i]}: #{n}"
-          print "\n"
+          puts "#{@types[i]}: #{n}"
         end if config.verbose?
 
-        test_result = block.call(result, arguments, error)
+        result, error = nil, nil
+        begin
+          result = @method.call(*arguments)
+        rescue Exception => e
+          error = e
+        end
 
-        unless error
+        is_exception = false
+        begin
+          test_result = block.call(result, arguments, error)
+        rescue => e
+          is_exception = true
+        end
+
+        unless is_exception
           case test_result
           when true
-            passed += 1
+            stats.passed += 1
           when false
-            failures += 1
+            stats.failures += 1
           end
         else
-          exception += 1
+          stats.add_exception(e)
           break
         end
 
       end
 
-      return {
-        examples: examples,
-        passed: passed,
-        failures: failures,
-        exception: exception
-      }
+      return stats
+    end
+
+    class Result
+      def initialize(examples)
+        @examples = examples
+        @passed = 0
+        @failures = 0
+        @exceptions = []
+      end
+      attr_reader :examples, :passed, :failures
+
+      def passed=(n)
+        raise RangeError if n > @examples
+        @passed = n
+      end
+
+      def failures=(n)
+        raise RangeError if n > @examples
+        @failures = n
+      end
+
+      def exceptions; return @exceptions.length; end
+
+      def add_exception(e)
+        @exceptions.push(e)
+      end
     end
   end
+end
+
+def QueenCheck(*args)
+  QueenCheck.new(*args)
 end
