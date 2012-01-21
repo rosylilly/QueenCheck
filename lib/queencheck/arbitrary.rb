@@ -21,7 +21,7 @@ module QueenCheck
 
     def set_arbitrary(&block)
       self.class_eval do
-        define_singleton_method(:arbitrary, &block)
+        define_method(:arbitrary, &block)
       end
     end
 
