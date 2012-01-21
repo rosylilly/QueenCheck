@@ -62,12 +62,10 @@ module QueenCheck
         if is_exception
           stats.add_exception(e)
           break
+        elsif test_result
+          stats.passed += 1
         else
-          if test_result
-            stats.passed += 1
-          else
-            stats.failures += 1
-          end
+          stats.failures += 1
         end
 
       end
