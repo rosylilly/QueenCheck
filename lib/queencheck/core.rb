@@ -84,7 +84,7 @@ module QueenCheck
         @failures = n
       end
 
-      def exceptions; return @exceptions.length; end
+      def exceptions; @exceptions.length; end
 
       def add_exception(e)
         @exceptions.push(e)
