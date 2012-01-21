@@ -1,4 +1,4 @@
-require 'queencheck/core'
+require 'queencheck'
 
 describe QueenCheck do
   before(:each) do

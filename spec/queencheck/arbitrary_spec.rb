@@ -1,3 +1,5 @@
+require 'queencheck/arbitrary'
+
 describe QueenCheck::Arbitrary do
   class Example
     extend QueenCheck::Arbitrary
