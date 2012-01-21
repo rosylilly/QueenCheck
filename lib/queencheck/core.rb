@@ -60,7 +60,6 @@ module QueenCheck
         else
           stats.failures += 1
         end
-
       end
 
       return stats
