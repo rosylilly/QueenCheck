@@ -20,8 +20,9 @@ module QueenCheck
     end
 
     def set_arbitrary(&block)
-      self.class_eval do
-        define_method(:arbitrary, &block)
+      self.module_eval do
+        sig = class << self; self; end
+        sig.send(:define_method, :arbitrary, &block)
       end
     end
 
