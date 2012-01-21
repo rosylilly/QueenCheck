@@ -14,7 +14,7 @@ module QueenCheck
           next type
         elsif types.kind_of?(Symbol)
           type = QueenCheck::Arbitrary::Instance.get_by_id(type)
-          next type unless type.nil?
+          next type if type
         end
         raise QueenCheck::Arbitrary::NotQueenCheckArbitrary, "`#{type}` is not implemented arbitrary"
       end
