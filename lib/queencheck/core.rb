@@ -66,7 +66,6 @@ module QueenCheck
           end
         else
           stats.add_exception(e)
-          break
         end
 
       end
