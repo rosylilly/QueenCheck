@@ -48,7 +48,7 @@ module QueenCheck
         is_exception = false
         begin
           test_result = block.call(result, arguments, error)
-        rescue
+        rescue Exception
           is_exception = true
         end
 
