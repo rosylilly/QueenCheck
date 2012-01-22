@@ -34,6 +34,7 @@ Gem::Specification.new do |s|
     "lib/queencheck/float.rb",
     "lib/queencheck/integer.rb",
     "lib/queencheck/string.rb",
+    "queencheck.gemspec",
     "spec/queencheck/arbitrary_spec.rb",
     "spec/queencheck/core_spec.rb",
     "spec/queencheck/elements_of_spec.rb",
