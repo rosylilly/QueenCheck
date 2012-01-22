@@ -1,4 +1,4 @@
-# QueenCheck
+# QueenCheck [![Build Status](https://secure.travis-ci.org/rosylilly/QueenCheck.png)](http://travis-ci.org/rosylilly/QueenCheck)
 
 QueenCheck is random test library.
 
