@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Index - QueenCheck</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/syntax.css">
+  </head>
+  <body>
+    <h1 id="brand">QueenCheck</h1>
+    <nav id="global">
+      <li><a href="/">About</a></li>
+      <li><a href="/guide">Guide</a></li>
+      <li><a href="/reference">Reference</a></li>
+    </nav>
+
+    <article>
+      <h1 id='about_queencheck'>About &#8220;QueenCheck&#8221;</h1>
+
+<p>QueenCheckはHaskellのテストライブラリである、QuickCheckを真似た、Ruby Libraryです。</p>
+
+<h2 id='usage'>Usage</h2>
+<div class='highlight'><pre><code class='ruby'><span class='lineno'> 1</span> <span class='nb'>require</span> <span class='s1'>&#39;queencheck&#39;</span>
+<span class='lineno'> 2</span> 
+<span class='lineno'> 3</span> <span class='n'>number</span> <span class='o'>=</span> <span class='mi'>100</span>
+<span class='lineno'> 4</span> <span class='n'>check</span> <span class='o'>=</span> <span class='no'>QueenCheck</span><span class='o'>.</span><span class='n'>new</span><span class='p'>(</span><span class='n'>number</span><span class='p'>,</span> <span class='ss'>:+</span><span class='p'>,</span> <span class='nb'>Integer</span><span class='p'>)</span>
+<span class='lineno'> 5</span> 
+<span class='lineno'> 6</span> <span class='n'>res</span> <span class='o'>=</span> <span class='n'>check</span><span class='o'>.</span><span class='n'>run</span><span class='p'>(</span><span class='n'>verbose</span><span class='p'>:</span> <span class='kp'>true</span><span class='p'>)</span> <span class='k'>do</span> <span class='o'>|</span> <span class='n'>result</span><span class='p'>,</span> <span class='n'>arguments</span><span class='p'>,</span> <span class='n'>error</span> <span class='o'>|</span>
+<span class='lineno'> 7</span>   <span class='n'>result</span> <span class='o'>==</span> <span class='n'>number</span> <span class='o'>+</span> <span class='n'>arguments</span><span class='o'>[</span><span class='mi'>0</span><span class='o'>]</span>
+<span class='lineno'> 8</span> <span class='k'>end</span>
+<span class='lineno'> 9</span> 
+<span class='lineno'>10</span> <span class='nb'>puts</span> <span class='s2'>&quot;</span><span class='si'>#{</span><span class='n'>res</span><span class='o'>.</span><span class='n'>passed</span><span class='si'>}</span><span class='s2'> / </span><span class='si'>#{</span><span class='n'>res</span><span class='o'>.</span><span class='n'>examples</span><span class='si'>}</span><span class='s2'>&quot;</span>
+</code></pre>
+</div>
+<h1 id='link'>Link</h1>
+
+<ul>
+<li><a href='https://github.com/rosylilly/QueenCheck'>Repository on GitHub</a></li>
+</ul>
+    </article>
+
+    <footer>
+      <address><a href="http://twitter.com/rosylilly">@rosylilly</a> | <a href="http://rosylilly.github.com">rosylilly.github.com</a></address>
+      <p>Icon by <a href="http://www.defaulticon.com/">DefaultIcon</a></p>
+      <p>Texture by <a href="http://bashcorpo.deviantart.com/art/Grungy-paper-texture-v-5-22966998">Grungy paper texture v.5</a></p>
+    </footer>
+  </body>
+</html>

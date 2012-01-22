@@ -1,0 +1,124 @@
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #fff;
+}
+
+body {
+  position: relative;
+  margin: 0 auto;
+  width: 980px;
+}
+
+h1#brand {
+  position: absolute;
+  margin: -0.5em 0 0 0;
+  padding: 0;
+  top: 50%;
+  left: 0;
+  width: 490px;
+  text-align: center;
+  color: #999;
+  text-shadow: 0 1px 0 #fff, 0 -1px #000;
+  line-height: 1;
+  font-family: 'Zapfino', monospace;
+  font-size: 40px;
+}
+
+nav#global,
+footer {
+  position: absolute;
+  left: 50px;
+  width: 390px;
+  text-align: center;
+  line-height: 1;
+}
+
+nav#global {
+  margin: 30px 0 0 0;
+  padding: 10px 0 0 0;
+  top: 50%;
+  font-size: 15px;
+  border-top: 1px solid #999;
+}
+
+nav#global * {
+  display: inline;
+}
+
+nav#global a {
+  color: #999;
+  text-decoration: none;
+  text-shadow: 0 1px 0 #fff, 0 -1px #000;
+}
+
+nav#global li + li a::before {
+  content: '| ';
+  font-weight: normal;
+  text-shadow: none;
+  color: #ddd;
+}
+
+footer {
+  font-size: 9px;
+  top: 70%;
+  color: #666;
+}
+
+footer address {
+  font-style: normal;
+}
+
+footer a {
+  color: #666;
+  text-decoration: none;
+}
+
+article {
+  display: block;
+  position: absolute;
+  margin: 0;
+  padding: 0 20px;
+  width: 450px;
+  height: 100%;
+  top: 0;
+  right: 0;
+  background: #fff url(/img/background.jpg) no-repeat center center;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+  line-height: 1.5;
+  font-size: 13px;
+  color: #3f312b;
+  font-family: 'Georgia', 'HiraMinProN-W3', serif;
+}
+
+article h1 {
+  text-indent: 37px;
+  background: url(/img/bookmark.png) no-repeat left center;
+}
+article h1#link {
+  background-image: url(/img/link.png);
+}
+
+article a {
+  color: #1e50a2;
+}
+
+pre code {
+  display: block;
+  background: #333 url(/img/code.png) no-repeat 400px bottom;
+  color: #fff;
+  font-family: 'Ricty', 'Inconsolata', monospace;
+  border: 5px solid #666;
+  border-radius: 5px;
+  overflow: auto;
+}
+
+pre code .lineno {
+  display: inline-block;
+  margin: -0.5em 0;
+  padding: 0 0.2em;
+  background: #666;
+}
