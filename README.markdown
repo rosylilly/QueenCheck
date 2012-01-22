@@ -6,6 +6,10 @@ Inspired by QuickCheck library in Haskell.
 
 ## Usage
 
+```shell
+gem install queencheck
+```
+
 ```ruby
 require 'queencheck'
 
@@ -17,5 +21,5 @@ res = check.run(verbose: true) do | result, arguments, error |
     result == number + arguments[0]
 end
 
-puts "#{res[:passed]} / #{res[:examples]}"
+puts "#{res.passed} / #{res.examples}"
 ```
