@@ -3,11 +3,7 @@ require 'spork'
 require 'rspec'
 
 Spork.prefork do
-  Rspec.configure do | config |
-    config(:before) do
-      @lib_path = Pathname.new(File.expand_path('../../lib/', __FILE__))
-    end
-  end
+  $:.unshift Pathname.new(File.expand_path('../../lib/', __FILE__))
 end
 
 Spork.each_run do
