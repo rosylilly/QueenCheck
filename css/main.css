@@ -85,7 +85,7 @@ article {
   height: 100%;
   top: 0;
   right: 0;
-  background: #fff url(/img/background.jpg) no-repeat center center;
+  background: #fff url(/QueenCheck/img/background.jpg) no-repeat center center;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
   overflow: auto;
   line-height: 1.5;
@@ -96,10 +96,10 @@ article {
 
 article h1 {
   text-indent: 37px;
-  background: url(/img/bookmark.png) no-repeat left center;
+  background: url(/QueenCheck/img/bookmark.png) no-repeat left center;
 }
 article h1#link {
-  background-image: url(/img/link.png);
+  background-image: url(/QueenCheck/img/link.png);
 }
 
 article a {
@@ -108,7 +108,7 @@ article a {
 
 pre code {
   display: block;
-  background: #333 url(/img/code.png) no-repeat 400px bottom;
+  background: #333 url(/QueenCheck/img/code.png) no-repeat 400px bottom;
   color: #fff;
   font-family: 'Ricty', 'Inconsolata', monospace;
   border: 5px solid #666;
