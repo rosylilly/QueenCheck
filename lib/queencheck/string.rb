@@ -33,7 +33,7 @@ class String
 
     ret = []
     (rand(max/2) + (max/2)).times do
-      ret << charset[rand(charset.length)]
+      ret << charset.sample
     end
 
     return ret.pack('U*')
