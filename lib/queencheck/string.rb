@@ -31,7 +31,7 @@ class String
       charset += (0x1000 ... 0x20000).to_a
     end
 
-    if charset.respond_to?(:sample)
+    if !charset.respond_to?(:sample)
       class << charset
         def sample; self[rand(self.length)]; end
       end
