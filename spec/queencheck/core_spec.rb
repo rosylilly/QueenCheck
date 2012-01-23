@@ -11,7 +11,7 @@ describe QueenCheck do
     end
 
     ret.examples.should eq(100)
-    ret.passed.should eq(100)
+    ret.passes.should eq(100)
     ret.failures.should eq(0)
   end
 
@@ -27,7 +27,7 @@ describe QueenCheck do
     end
 
     ret.examples.should eq(100)
-    ret.passed.should eq(100)
+    ret.passes.should eq(100)
   end
 end
 

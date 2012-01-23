@@ -62,7 +62,7 @@ module QueenCheck
         unless is_exception
           case test_result
           when true
-            stats.passed += 1
+            stats.passes += 1
           when false
             stats.failures += 1
           end
@@ -77,15 +77,15 @@ module QueenCheck
     class Result
       def initialize(examples)
         @examples = examples
-        @passed = 0
+        @passes = 0
         @failures = 0
         @exceptions = []
       end
-      attr_reader :examples, :passed, :failures
+      attr_reader :examples, :passes, :failures
 
-      def passed=(n)
+      def passes=(n)
         raise RangeError if n > @examples
-        @passed = n
+        @passes = n
       end
 
       def failures=(n)
