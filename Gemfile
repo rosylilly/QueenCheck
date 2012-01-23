@@ -9,5 +9,6 @@ group :development do
   gem "spork", "0.9.0.rc9"
   gem "guard-spork", "0.5.1"
   gem "rb-fsevent", "0.4.3.1"
+  gem "guard-bundler"
   gem "fuubar", "~> 0.0.6"
 end
