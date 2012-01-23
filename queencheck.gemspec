@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "queencheck"
-  s.version = "0.0.0"
+  s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sho Kusano"]
-  s.date = "2012-01-22"
+  s.date = "2012-01-23"
   s.description = "QueenCheck is random test library. Inspired by QuickCheck library in Haskell."
   s.email = "rosylilly@aduca.org"
   s.extra_rdoc_files = [
@@ -39,6 +39,7 @@ Gem::Specification.new do |s|
     "spec/queencheck/core_spec.rb",
     "spec/queencheck/elements_of_spec.rb",
     "spec/queencheck/integer_spec.rb",
+    "spec/queencheck/string_spec.rb",
     "spec/spec_helper.rb"
   ]
   s.homepage = "https://github.com/rosylilly/QueenCheck"
@@ -58,6 +59,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<spork>, ["= 0.9.0.rc9"])
       s.add_development_dependency(%q<guard-spork>, ["= 0.5.1"])
       s.add_development_dependency(%q<rb-fsevent>, ["= 0.4.3.1"])
+      s.add_development_dependency(%q<guard-bundler>, [">= 0"])
       s.add_development_dependency(%q<fuubar>, ["~> 0.0.6"])
     else
       s.add_dependency(%q<jeweler>, [">= 0"])
@@ -68,6 +70,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<spork>, ["= 0.9.0.rc9"])
       s.add_dependency(%q<guard-spork>, ["= 0.5.1"])
       s.add_dependency(%q<rb-fsevent>, ["= 0.4.3.1"])
+      s.add_dependency(%q<guard-bundler>, [">= 0"])
       s.add_dependency(%q<fuubar>, ["~> 0.0.6"])
     end
   else
@@ -79,6 +82,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<spork>, ["= 0.9.0.rc9"])
     s.add_dependency(%q<guard-spork>, ["= 0.5.1"])
     s.add_dependency(%q<rb-fsevent>, ["= 0.4.3.1"])
+    s.add_dependency(%q<guard-bundler>, [">= 0"])
     s.add_dependency(%q<fuubar>, ["~> 0.0.6"])
   end
 end
