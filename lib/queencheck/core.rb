@@ -12,7 +12,7 @@ module QueenCheck
       @types = types.map do | type |
         if type.respond_to?(:arbitrary?) && type.arbitrary?
           next type
-        elsif types.kind_of?(Symbol)
+        elsif type.kind_of?(Symbol)
           type = QueenCheck::Arbitrary::Instance.get_by_id(type)
           next type if type
         end

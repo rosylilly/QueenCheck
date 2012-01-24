@@ -32,9 +32,10 @@ describe QueenCheck::Arbitrary do
     end
 
     it 'named search' do
-      arb = QueenCheck::Arbitrary(:sample) {}
+      arb = QueenCheck::Arbitrary(:sample) { (1..10).to_a[rand(10)] }
 
       QueenCheck::Arbitrary(:sample).should eq(arb)
+      QueenCheck(Kernel, :p, :sample).should_not be_nil
     end
   end
 end
