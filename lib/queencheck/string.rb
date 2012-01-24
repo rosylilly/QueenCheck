@@ -3,7 +3,7 @@ require 'queencheck/arbitrary'
 class String
   extend QueenCheck::Arbitrary
 
-  @@max_length = 3000
+  @@max_length = 256
 
   set_arbitrary do | seed |
     max = (@@max_length * (seed * seed)).ceil
@@ -38,7 +38,7 @@ class String
     end
 
     ret = []
-    (rand(max/2) + (max/2)).times do
+    (rand(max/2) + (max/2)).ceil.times do
       ret << charset.sample
     end
 
