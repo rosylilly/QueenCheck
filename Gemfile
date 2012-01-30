@@ -11,4 +11,7 @@ group :development do
   gem "guard-spork", ">= 0.5.1"
   gem "guard-rspec", ">= 0.6.0"
   gem "guard-bundler", ">= 0.1.3"
+  gem "guard-yard", ">= 1.0.2"
+  gem "yard", ">= 0.7.4"
+  gem "yard-tomdoc", ">= 0.3.0"
 end
