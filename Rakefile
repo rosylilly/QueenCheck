@@ -18,3 +18,11 @@ begin
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end
+
+require 'yard'
+require 'yard/rake/yardoc_task'
+YARD::Rake::YardocTask.new do |t|
+  t.files   = ['lib/**/*.rb']
+  t.options = ['--plugin=yard-tomdoc']
+  t.options << '--debug' << '--verbose' if $trace
+end
