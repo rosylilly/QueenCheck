@@ -29,5 +29,14 @@ describe QueenCheck do
     ret.examples.should eq(100)
     ret.passes.should eq(100)
   end
-end
 
+  describe 'Task' do
+    it 'verbose' do
+      task = QueenCheck::Core::Task.new(1, :+, [1])
+
+      task.run! do | result, arguments, error |
+        result != arguments[0]
+      end
+    end
+  end
+end

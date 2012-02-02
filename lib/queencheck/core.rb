@@ -8,13 +8,13 @@ module QueenCheck
   class Core
     def initialize(instance, method, *types)
       @instance = instance
-      @method = method.respond_to?(:call) ? method : instance.method(method.to_s.to_sym)
+      @method = method
       @types = types.map do | type |
         if type.respond_to?(:arbitrary?) && type.arbitrary?
           next type
         elsif type.kind_of?(Symbol)
-          type = QueenCheck::Arbitrary::Instance.get_by_id(type)
-          next type if type
+          arb = QueenCheck::Arbitrary::Instance.get_by_id(type)
+          next arb if arb
         end
         raise QueenCheck::Arbitrary::NotQueenCheckArbitrary, "`#{type}` is not implemented arbitrary"
       end
@@ -32,43 +32,9 @@ module QueenCheck
           arguments.push(type.arbitrary(range))
         end
 
-        if config.verbose?
-          arguments.each_with_index do | n, i |
-            puts "#{@types[i]}: #{n}"
-          end
-        end
+        stats.push(QueenCheck::Core::Task.new(@instance, @method, arguments).run!(&block))
 
-        result, error = nil, nil
-        begin
-          result = @method.call(*arguments)
-        rescue Exception => e
-          error = e
-        end
-
-        is_exception = false
-        begin
-          test_result = block.call(result, arguments, error)
-        rescue Exception => e
-          error = e
-          is_exception = true
-        end
-
-        if config.verbose?
-          print "#{@instance.kind_of?(Class) ? @instance.name : @instance.class.name} \##{@method.respond_to?(:name) ? @method.name : @method.class} ("
-          print @types.map{|type| "#{type.name}" }.join(', ') + ')'
-          puts " => #{is_exception ? error.class : test_result}"
-        end
-
-        unless is_exception
-          case test_result
-          when true
-            stats.passes += 1
-          when false
-            stats.failures += 1
-          end
-        else
-          stats.add_exception(error)
-        end
+        puts taks.to_s(true) if config.verbose?
       end
 
       return stats
@@ -77,26 +43,68 @@ module QueenCheck
     class Result
       def initialize(examples)
         @examples = examples
-        @passes = 0
-        @failures = 0
-        @exceptions = []
+        @tasks = []
       end
-      attr_reader :examples, :passes, :failures
+      attr_reader :examples
 
-      def passes=(n)
-        raise RangeError if n > @examples
-        @passes = n
+      def push(obj)
+        @tasks.push(obj)
       end
 
-      def failures=(n)
-        raise RangeError if n > @examples
-        @failures = n
+      def [](index)
+        @tasks[index]
       end
 
-      def exceptions; @exceptions.length; end
+      def passes
+        @tasks.reject {|task| !task.is_pass }.length
+      end
 
-      def add_exception(e)
-        @exceptions.push(e)
+      def failures
+        @tasks.reject {|task| task.is_pass }.length
+      end
+
+      def tasks(filter = :pass)
+        @tasks.reject {|task| task.is_pass == (filter == :pass ? false : true) }
+      end
+    end
+
+    class Task
+      def initialize(instance, method, args)
+        @is_pass = nil
+        @instance = instance
+        @method = method
+        @arguments = args
+        @result = nil
+        @exception = nil
+      end
+      attr_reader :is_pass, :instance, :method, :arguments, :result, :exception
+
+      def run!(&check_block)
+        return unless @is_pass.nil?
+        func = @method.respond_to?(:call) ? @method : @instance.method(@method)
+
+        begin
+          @result = func.call(*@arguments)
+        rescue Exception => e
+          @exception = e
+        end
+
+        @is_pass = !!check_block.call(@result, @arguments, @exception) if check_block
+
+        return self
+      end
+
+      def to_s(verbose = false)
+        if verbose
+          "<#{@instance.class.name}:#{@instance.object_id}>\##{@method.kind_of?(Method) ? @method.name : '::lambda::'}(" +
+          @arguments.map { |arg| "#{arg.class.name}:#{arg}" }.join(', ') +
+          ") => <#{@result.class.name}:#{@result}>" +
+          (!@is_pass ? " !! #{@exception.class.name}: #{@exception.message}" : '')
+        else
+          "#{@instance.class.name}\##{@method.respond_to?(:call) ? '::lambda::' : @method}(" +
+          @arguments.map {|arg| "#{arg}" } .join(', ') +
+          ") => #{@result}" + (!@is_pass ? "! #{@exception.class.name}: #{@exception.message}": '')
+        end
       end
     end
   end
