@@ -1,10 +1,13 @@
 source "http://rubygems.org"
 
-group :development do
-  gem "jeweler", ">= 1.8.3"
+group :development, :test do
   gem "rake", ">= 0.9.2.2"
   gem "rspec", ">= 2.8.0"
   gem "fuubar", ">= 0.0.6"
+end
+
+group :development do
+  gem "jeweler", ">= 1.8.3"
   gem "growl", ">= 1.0.3"
   gem "spork", ">= 0.9.0.rc9"
   gem "rb-fsevent", ">= 0.9.0"

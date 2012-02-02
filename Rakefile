@@ -3,8 +3,6 @@ require 'bundler'
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec)
 
-task :default => :spec
-
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
@@ -19,10 +17,14 @@ rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end
 
-require 'yard'
-require 'yard/rake/yardoc_task'
-YARD::Rake::YardocTask.new do |t|
-  t.files   = ['lib/**/*.rb']
-  t.options = ['--plugin=yard-tomdoc']
-  t.options << '--debug' << '--verbose' if $trace
+begin
+  require 'yard'
+  require 'yard/rake/yardoc_task'
+  YARD::Rake::YardocTask.new do |t|
+    t.files   = ['lib/**/*.rb']
+    t.options = ['--plugin=yard-tomdoc']
+    t.options << '--debug' << '--verbose' if $trace
+  end
+rescue LoadError
+  puts "YARD not available. Install it with: bundle install"
 end
