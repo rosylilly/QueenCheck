@@ -1,11 +1,11 @@
 require 'queencheck/rspec'
 
 describe 'QueenCheck::RSpec' do
-  qcheck 1, :+, [Integer] do | result, arguments, exception |
+  qcheck 1, :+, [Integer], {count: 5} do | result, arguments, exception |
     result.should == arguments[0] + 1
   end
 
-  qcheck 1, :/, [Integer] do | result, arguments, exception |
+  qcheck 1, :/, [Integer], {count: 5} do | result, arguments, exception |
     if exception
       if exception.kind_of?(ZeroDivisionError)
         arguments[0].should == 0
