@@ -36,4 +36,8 @@ class Class
   def arbitrary(gen = nil, &block)
     QueenCheck::Arbitrary(name, gen || block)
   end
+
+  def arbitrary?
+    !QueenCheck::Arbitrary(name).nil?
+  end
 end

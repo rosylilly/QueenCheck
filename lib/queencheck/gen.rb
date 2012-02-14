@@ -13,8 +13,7 @@ module QueenCheck
       @conditions = options['conditions'] || options[:conditions] || []
     end
 
-    def value(progress, ret = DEFAULT_RETRY_COUNT)
-      raise QueenCheck::CanNotRetryMoreException if ret < 0
+    def value(progress)
       v = @proc.call(progress, random)
 
       cond = @conditions.inject(true) { | bool, cond |
@@ -28,7 +27,7 @@ module QueenCheck
       (@bound_min + rand * (@bound_max - @bound_min)).to_i
     end
 
-    def options
+    def option
       {
         :min => @bound_min,
         :max => @bound_max,
@@ -37,10 +36,16 @@ module QueenCheck
     end
 
     def sized(lo, hi)
-      self.class.new({
+      self.class.new(option.merge({
         :min => lo,
         :max => hi
-      }, &@proc)
+      }), &@proc)
+    end
+
+    def bind
+      self.class.new(option) { | p, r |
+        yield(value(p)[0]).value(p)[0]
+      }
     end
 
     # set conditions
@@ -52,7 +57,7 @@ module QueenCheck
     #       :equal? => 'a'
     #     )
     def where(conditions)
-      self.class.new(options.merge({
+      self.class.new(option.merge({
         :conditions => @conditions + conditions.to_a.map { | el |
           cond = el[0].to_s.sub(/([^\?])$/){$1 + '?'}
           QueenCheck::Condition.method(cond).call(el[1])
@@ -71,6 +76,12 @@ module QueenCheck
         :max => ary.size - 1
       }) { | p, r |
         ary[r]
+      }
+    end
+
+    def self.one_of(ary)
+      elements_of(ary).bind { | gen |
+        gen
       }
     end
   end

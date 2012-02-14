@@ -9,6 +9,8 @@ describe QueenCheck::Arbitrary do
     end
 
     Klass.arbitrary.should be_instance_of(QueenCheck::Arbitrary)
+    Klass.arbitrary?.should == true
     Class.arbitrary.should be_nil
+    Class.arbitrary?.should == false
   end
 end

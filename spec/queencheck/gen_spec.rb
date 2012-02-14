@@ -17,6 +17,20 @@ describe QueenCheck::Gen do
     end
   end
 
+  it "#one_of" do
+    one_of = QueenCheck::Gen.one_of([
+      QueenCheck::Gen.elements_of([1, 2, 3]),
+      QueenCheck::Gen.choose(5, 10)
+    ])
+
+    10000.times do | n |
+      v = one_of.value(n)[0]
+      v.should >= 1
+      v.should <= 10
+      v.should_not == 4
+    end
+  end
+
   it "#where" do
     gen = QueenCheck::Gen.choose(0, 10)
 
@@ -25,7 +39,7 @@ describe QueenCheck::Gen do
     ).where(
       :not_equal => 0
     )
-    10.times do | n |
+    10000.times do | n |
       v = include_gen.value(n)
       [2, 3].include?(v[0]).should == v[1]
     end
