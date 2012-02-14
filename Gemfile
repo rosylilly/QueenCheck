@@ -17,4 +17,5 @@ group :development do
   gem "guard-yard", ">= 1.0.2"
   gem "yard", ">= 0.7.4"
   gem "yard-tomdoc", ">= 0.3.0"
+  gem "redcarpet"
 end
