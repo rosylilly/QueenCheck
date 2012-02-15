@@ -44,4 +44,25 @@ describe QueenCheck::Gen do
       [2, 3].include?(v[0]).should == v[1]
     end
   end
+
+  it "#frequency" do
+    gen = QueenCheck::Gen.frequency([
+      [1, QueenCheck::Gen.elements_of([0])],
+      [3, QueenCheck::Gen.elements_of([1])]
+    ])
+
+    stat = {
+      :a => 0,
+      :b => 0
+    }
+    10000.times do | n |
+      v = gen.value(n)
+      if v[0] == 0
+        stat[:a] += 1
+      else
+        stat[:b] += 1
+      end
+    end
+    stat[:a].should <= stat[:b]
+  end
 end

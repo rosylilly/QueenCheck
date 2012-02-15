@@ -35,7 +35,7 @@ module QueenCheck
       }
     end
 
-    def sized(lo, hi)
+    def resize(lo, hi)
       self.class.new(option.merge({
         :min => lo,
         :max => hi
@@ -73,7 +73,7 @@ module QueenCheck
     def self.elements_of(ary)
       new({
         :min => 0,
-        :max => ary.size - 1
+        :max => ary.size
       }) { | p, r |
         ary[r]
       }
@@ -83,6 +83,18 @@ module QueenCheck
       elements_of(ary).bind { | gen |
         gen
       }
+    end
+
+    def self.frequency(ary)
+      generaters = []
+      ary.each do | pair |
+        pair[0].times do 
+          generaters << pair[1]
+        end
+      end
+      raise ArgumentsError, "frequency: illigal weight total N > 0" if generaters.empty?
+
+      one_of(generaters)
     end
   end
 end
