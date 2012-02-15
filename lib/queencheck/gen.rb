@@ -3,13 +3,12 @@ require 'queencheck/condition'
 module QueenCheck
   class Gen
     DEFAULT_BOUND = 1000
-    DEFAULT_RETRY_COUNT = 100
 
     def initialize(options = {}, &block)
       @proc = block
 
-      @bound_min = options['min'] || options[:min] || 0
-      @bound_max = options['max'] || options[:max] || DEFAULT_BOUND
+      @bound_min  = options['min'] || options[:min] || 0
+      @bound_max  = options['max'] || options[:max] || DEFAULT_BOUND
       @conditions = options['conditions'] || options[:conditions] || []
     end
 
@@ -29,8 +28,8 @@ module QueenCheck
 
     def option
       {
-        :min => @bound_min,
-        :max => @bound_max,
+        :min        => @bound_min,
+        :max        => @bound_max,
         :conditions => @conditions
       }
     end

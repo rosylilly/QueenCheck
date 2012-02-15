@@ -10,4 +10,7 @@ module QueenCheck
 end
 
 $: < File.dirname(File.expand_path(__FILE__))
+require 'queencheck/core'
 require 'queencheck/arbitrary'
+require 'queencheck/gen'
+require 'queencheck/exception'

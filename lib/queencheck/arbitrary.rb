@@ -17,6 +17,7 @@ module QueenCheck
 
       QueenCheck::Arbitrary.to_dic(name, self)
     end
+    attr_reader :gen
 
     ## class methods:
 
