@@ -61,6 +61,12 @@ module QueenCheck
       }
     end
 
+    def fmap
+      bind { | x |
+        self.class.unit(yield(x))
+      }
+    end
+
     # set conditions
     #
     # @param [Hash] conditions { conditon_name => condition_param }
@@ -124,7 +130,10 @@ module QueenCheck
     # @return [QueenCheck::Gen]
     def self.one_of(ary)
       elements_of(ary).bind { | gen |
-        gen
+        gen.instance_of?(QueenCheck::Gen) ? gen : (
+          gen.instance_of?(QueenCheck::Arbitrary) ? 
+            gen.gen : QueenCheck::Arbitrary(gen).gen
+        )
       }
     end
 
@@ -198,7 +207,10 @@ module QueenCheck
           index -= pair.first
         end
 
-        gen
+        gen.instance_of?(QueenCheck::Gen) ? gen : (
+          gen.instance_of?(QueenCheck::Arbitrary) ? 
+            gen.gen : QueenCheck::Arbitrary(gen).gen
+        )
       }
     end
 

@@ -52,8 +52,11 @@ module QueenCheck
     DEFAULT_TEST_COUNT = 100
     def check(count = DEFAULT_TEST_COUNT)
       results = QueenCheck::ResultSet.new
-      count.times do | n |
-        results << self.assert(n.to_f / count)
+      begin
+        count.times do | n |
+          results << self.assert(n.to_f / count)
+        end
+      rescue QueenCheck::CanNotRetryMore
       end
       return results
     end
