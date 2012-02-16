@@ -28,3 +28,14 @@ begin
 rescue LoadError
   puts "YARD not available. Install it with: bundle install"
 end
+
+begin
+  require 'pry'
+
+  task "pry" do
+    require './lib/queencheck'
+    binding.pry
+  end
+rescue LoadError
+  puts "Pry not available. Install it with: gem intall pry"
+end

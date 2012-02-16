@@ -20,4 +20,5 @@ group :development do
   gem "yard", ">= 0.7.4"
   gem "yard-tomdoc", ">= 0.3.0"
   gem "redcarpet"
+  gem "pry"
 end
