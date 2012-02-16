@@ -8,7 +8,6 @@ module QueenCheck
       @condition.call(n)
     end
 
-    ## class methods:
     def self.def_not(method_name)
       not_proc = proc { | *args |
         cond = self.method(method_name).call(*args)
@@ -26,13 +25,21 @@ module QueenCheck
       end
     end
 
+    # check value in ary
+    # 
+    # @param [Array] ary
+    # @return [QueenCheck::Condition]
     def self.include?(ary)
       new { |n|
         ary.include?(n)
       }
     end
+
+    # @method not_include?
+    # @return [QueenCheck::Condition]
     def_not :include?
 
+    # @return [QueenCheck::Condition]
     def self.instance_of?(klass)
       new { |n|
         n.instance_of?(klass)
@@ -54,7 +61,7 @@ module QueenCheck
     end
     def_not :nil?
 
-    def empty?()
+    def self.empty?()
       new { |n|
         n.empty?
       }

@@ -1,4 +1,4 @@
 module QueenCheck
-  class CanNotRetryMoreException < SystemStackError
+  class CanNotRetryMore < SystemStackError
   end
 end

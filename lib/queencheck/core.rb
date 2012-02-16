@@ -1,24 +1,69 @@
+require 'queencheck/exception'
 require 'queencheck/arbitrary'
+require 'queencheck/result'
 
 module QueenCheck
-  class Runner
-    class Example
+  class Testable
+    def initialize(*arbitraries, &assertion)
+      @arbitraries = arbitraries.map { | arbitrary |
+        arb = (
+          if arbitrary.instance_of?(QueenCheck::Arbitrary)
+            arbitrary.gen
+          elsif arbitrary.instance_of?(QueenCheck::Gen)
+            arbitrary
+          else
+            QueenCheck::Arbitrary(arbitrary)
+          end
+        )
+        raise TypeError, "Not Implemented Arbitrary or Gen: #{arbitrary}" if arb.nil?
+        arb.instance_of?(QueenCheck::Arbitrary) ? arb.gen : arb
+      }
+      @assertion = assertion
     end
 
-    MAX_GENERATE_COUNT    = 10000
-    DEFAULT_EXAMPLE_COUNT = 100
+    DEFAULT_RETRY_COUNT = 100
 
-    def initialize(*arbitraries, &block)
-      @test_proc = block
-      @arbitraries = []
-      arbitraries.each do | arbitrary |
-        if arbitrary.instance_of?(QueenCheck::Gen) || arbitrary.instance_of?(QueenCheck::Arbitrary)
-          @arbitraries << arbitrary.respond_to?(:gen) ? arbitrary.gen : arbitrary
-        else
-          raise ArgumentError, "Not implemented `#{arbitrary}` arbitrary" if (arb = QueenCheck::Arbitrary(arbitrary)).nil?
-          @arbitraries << arb.gen
+    # @param [Float] progress
+    # @param [Integer] retry_count
+    #
+    # @return [Array<Object, Object ...>] generated values
+    def properties(progress, retry_count = DEFAULT_RETRY_COUNT)
+      @arbitraries.map { | gen |
+        c = 0
+        until (v = gen.value(progress))[1]
+          c += 1
+          raise QueenCheck::CanNotRetryMore, "can not retry generate: #{gen.inspect}" if c >= retry_count
         end
+        v[0]
+      }
+    end
+
+    def assert(progress)
+      begin
+        props = properties(progress)
+        is_success = @assertion.call(*props)
+      rescue => ex
+        is_success = false
+        exception = ex
       end
+      QueenCheck::Result.new(props, is_success, exception)
+    end
+
+    DEFAULT_TEST_COUNT = 100
+    def check(count = DEFAULT_TEST_COUNT)
+      results = QueenCheck::ResultSet.new
+      count.times do | n |
+        results << self.assert(n.to_f / count)
+      end
+      return results
+    end
+
+    def check_with_label(labels, count = DEFAULT_TEST_COUNT)
+      sets = check(count)
+      labels.each_pair do | label, proc |
+        sets.labeling(label, &proc)
+      end
+      return sets
     end
   end
 end

@@ -12,6 +12,10 @@ module QueenCheck
       @conditions = options['conditions'] || options[:conditions] || []
     end
 
+    # get value form generater
+    #
+    # @param progress [Intger] > 0
+    # @return [Array<Any, Boolean>] Any Value & Condition Matched
     def value(progress)
       v = @proc.call(progress, random)
 
@@ -22,6 +26,7 @@ module QueenCheck
       return [v, cond]
     end
 
+    # @return [Integer]
     def random
       (@bound_min + rand * (@bound_max - @bound_min)).to_i
     end
@@ -34,6 +39,15 @@ module QueenCheck
       }
     end
 
+    def inspect
+      "<QueenCheck::Gen: {#{@proc.to_s}}>"
+    end
+
+    # resize bound of generater
+    #
+    #     QueenCheck::Gen.rand.resize(-100, 100) == QueenCheck::Gen.choose(-100, 100)
+    #
+    # @return [QueenCheck::Gen]
     def resize(lo, hi)
       self.class.new(option.merge({
         :min => lo,
@@ -49,13 +63,22 @@ module QueenCheck
 
     # set conditions
     #
-    # == Examples:
+    # @param [Hash] conditions { conditon_name => condition_param }
     #
+    # @see QueenCheck::Condition
+    #
+    # @return [QueenCheck::Gen] new generater
+    #
+    # @example
     #     QueenCheck::Gen.elements_of(['a', 'b', 'c']).where(
     #       :include? => ['1', 'a', 'A'],
     #       :equal? => 'a'
     #     )
-    def where(conditions, &block)
+    #
+    #     QueenCheck::Gen.choose(0, 100).where { |v|
+    #       v.odd?
+    #     }
+    def where(conditions = {}, &block)
       self.class.new(option.merge({
         :conditions => @conditions + conditions.to_a.map { | el |
           cond = el[0].to_s.sub(/([^\?])$/){$1 + '?'}
@@ -67,10 +90,22 @@ module QueenCheck
     end
 
     ## class methods:
+   
+    # choose value where >= lo and <= hi
+    # @param [Integer] lo bound min
+    # @param [Integer] hi bound max
+    # @example
+    #   QueenCheck::Gen.choose(0, 100)
+    # @return [QueenCheck::Gen]
     def self.choose(lo, hi)
       elements_of((lo .. hi).to_a)
     end
 
+    # choose value from ary
+    # @param [Array] ary
+    # @example
+    #   QueenCheck::Gen.elements_of([0, 1, 2])
+    # @return [QueenCheck::Gen]
     def self.elements_of(ary)
       new({
         :min => 0,
@@ -80,12 +115,28 @@ module QueenCheck
       }
     end
 
+    # @param [Array<QueenCheck::Gen>] ary list of Generaters
+    # @example
+    #   QueenCheck::Gen.one_of([
+    #     QueenCheck::Gen.elements_of([0, 1, 3]),
+    #     QueenCheck::Gen.elements_of(["A", "B", "C"])
+    #   ])
+    # @return [QueenCheck::Gen]
     def self.one_of(ary)
       elements_of(ary).bind { | gen |
         gen
       }
     end
 
+    # @param [Array<[weight[Integer], QueenCheck::Gen]>] ary list of pairs weight and generater
+    # @example
+    #   QueenCheck::Gen.frequency([
+    #     [1, QueenCheck::Gen.elements_of(['a', 'b', 'c'])],
+    #     [2, QueenCheck::Gen.elements_of(['1', '2', '3'])]
+    #   ])
+    #   # propability of 1/3 => 'a', 'b' or 'c'
+    #   # propability of 2/3 => '1', '2' or '3'
+    # @return [QueenCheck::Gen]
     def self.frequency(ary)
       generaters = []
       ary.each do | pair |
@@ -98,12 +149,22 @@ module QueenCheck
       one_of(generaters)
     end
 
+    # random generater
+    # @example
+    #   QueenCheck::Gen.rand.resize(-100, 100)
+    # @return [QueenCheck::Gen]
     def self.rand
       new { | p, r |
         r
       }
     end
 
+    # unit generater
+    # @param [Object] n any object
+    # @example
+    #   QueenCheck::Gen.unit(1)
+    #   # always generate 1
+    # @return [QueenCheck::Gen]
     def self.unit(n)
       new {
         n

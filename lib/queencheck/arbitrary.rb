@@ -12,18 +12,19 @@ module QueenCheck
   class Arbitrary
     @@dictionary = {}
 
-    def initialize(name, gen)
+    def initialize(name, gen, &block)
+      gen = block || gen
       @gen = gen.instance_of?(QueenCheck::Gen) ? gen : QueenCheck::Gen.new(&gen)
-
-      QueenCheck::Arbitrary.to_dic(name, self)
+      @name = QueenCheck::Arbitrary.to_dic(name, self)
     end
-    attr_reader :gen
+    attr_reader :name, :gen
 
     ## class methods:
 
     def self.to_dic(name, arb)
       name = name.respond_to?(:name) ? name.name : name.to_s
       @@dictionary[name] = arb
+      return name
     end
 
     def self.from_dic(name)

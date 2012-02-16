@@ -1,5 +1,7 @@
 source "http://rubygems.org"
 
+gem "colorize", ">= 0.5.8"
+
 group :development, :test do
   gem "rake", ">= 0.9.2.2"
   gem "rspec", ">= 2.8.0"

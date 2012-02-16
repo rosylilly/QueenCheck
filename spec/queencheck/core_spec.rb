@@ -1,11 +1,14 @@
-require 'queencheck/core'
+require 'queencheck'
 
-QueenCheck::Arbitrary(Integer, QueenCheck::Gen.choose(-100, 100))
+prop_int = QueenCheck::Testable.new(
+  QueenCheck::Gen.choose(0, 100),
+  QueenCheck::Gen.choose(0, 100)
+) { | x, y |
+  x + y == y + x
+}
 
-describe QueenCheck::Runner do
-  it "run" do
-    QueenCheck::Runner.new(Integer, Integer) do | x, y |
-      x + y == y + x
-    end
-  end
-end
+puts prop_int.check_with_label(
+  "x > y" => proc {|x, y| x > y },
+  "x < y" => proc {|x, y| x < y },
+  "x == y" => proc {|x, y| x == y }
+).pretty_report
