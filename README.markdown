@@ -4,21 +4,9 @@ QueenCheck is random test library.
 
 Inspired by QuickCheck library in Haskell.
 
+__現在 v1.0 移行中のため、様々なAPIが今後使用出来なくなります__
+
 ## Usage
 
     $ gem install queencheck
 
-
-## Example
-
-    require 'queencheck'
-    
-    number = 100
-    
-    check = QueenCheck(number, :+, Integer)
-    
-    res = check.run(verbose: true) do | result, arguments, error |
-    result == number + arguments[0]
-    end
-    
-    puts "#{res.passes} / #{res.examples}"
