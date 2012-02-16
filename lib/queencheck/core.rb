@@ -52,11 +52,12 @@ module QueenCheck
     DEFAULT_TEST_COUNT = 100
     def check(count = DEFAULT_TEST_COUNT)
       results = QueenCheck::ResultSet.new
-      begin
-        count.times do | n |
+      count.times do | n |
+        begin
           results << self.assert(n.to_f / count)
+        rescue QueenCheck::CanNotRetryMore
+          next
         end
-      rescue QueenCheck::CanNotRetryMore
       end
       return results
     end
