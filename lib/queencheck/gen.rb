@@ -55,12 +55,14 @@ module QueenCheck
     #       :include? => ['1', 'a', 'A'],
     #       :equal? => 'a'
     #     )
-    def where(conditions)
+    def where(conditions, &block)
       self.class.new(option.merge({
         :conditions => @conditions + conditions.to_a.map { | el |
           cond = el[0].to_s.sub(/([^\?])$/){$1 + '?'}
           QueenCheck::Condition.method(cond).call(el[1])
-        }
+        } + (
+          !block.nil? ? [QueenCheck::Condition.new(&block)] : []
+        )
       }), &@proc)
     end
 
@@ -94,6 +96,18 @@ module QueenCheck
       raise ArgumentsError, "frequency: illigal weight total N > 0" if generaters.empty?
 
       one_of(generaters)
+    end
+
+    def self.rand
+      new { | p, r |
+        r
+      }
+    end
+
+    def self.unit(n)
+      new {
+        n
+      }
     end
   end
 end
