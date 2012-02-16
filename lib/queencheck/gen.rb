@@ -170,5 +170,42 @@ module QueenCheck
         n
       }
     end
+
+    def self.progress
+      new { | p, r |
+        p
+      }
+    end
+
+    # step up generater
+    # @param [Array<[weight, Gen]>] ary
+    # @example
+    #   QueenCheck::Gen.step_up([
+    #     [1, QueenCheck::Gen.elements_of(['a', 'b', 'c'])],
+    #     [2, QueenCheck::Gen.elements_of(['A', 'B', 'C'])]
+    #   ])
+    # @return [QueenCheck::Gen]
+    def self.step_up(ary)
+      total = ary.inject(0) { | total, pair | total + pair.first }
+
+      self.progress.bind { |p, r|
+        index = total * p
+
+        gen = nil
+        ary.each do | pair |
+          gen = pair.last 
+          break if index <= pair.first
+          index -= pair.first
+        end
+
+        gen
+      }
+    end
+
+    def self.quadratic(x, y = 1, z = 0)
+      new { |p, r|
+        (x * (p ** 2)) + (y * p) + z
+      }
+    end
   end
 end
