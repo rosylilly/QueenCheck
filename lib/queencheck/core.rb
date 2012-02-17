@@ -3,7 +3,18 @@ require 'queencheck/arbitrary'
 require 'queencheck/result'
 
 module QueenCheck
+  # QueenCheck Testable Object
+  #
+  # @example
+  #   QueenCheck::Testable.new(Integer, Integer) do | x, y |
+  #     x + y == y + x
+  #   end
   class Testable
+    # @param [Class(implmented arbitrary) or QueenCheck::Arbitrary or QueenCheck::Gen or Arbitrary Name] arbitraries
+    # @param [Proc] assertion assert proc
+    # @return [QueenCheck::Testable] new Testable instance
+    # @example
+    #   QueenCheck::Testable(Integer, Integer.arbitrary, Integer.arbitrary.gen, :Integer)
     def initialize(*arbitraries, &assertion)
       @arbitraries = arbitraries.map { | arbitrary |
         arb = (
@@ -21,9 +32,44 @@ module QueenCheck
       @assertion = assertion
     end
 
+    DEFAULT_TEST_COUNT = 100
+
+    # check assert
+    # @param [Integer] count number of tests
+    # @return [QueenCheck::ResultReport] ResultReport instance
+    def check(count = DEFAULT_TEST_COUNT)
+      results = QueenCheck::ResultReport.new
+      count.times do | n |
+        begin
+          results << self.assert(n.to_f / count)
+        rescue QueenCheck::CanNotRetryMore
+          next
+        end
+      end
+      return results
+    end
+
+    # check assert with label for report
+    # @param [Hash] labels key is String. value is Proc.
+    # @param [Integer] count number of tests
+    # @return [QueenCheck::ResultReport] ResultReport instance
+    # @example
+    #   prop_int = QueenCheck::Testable(Integer, Integer){|x,y| true }
+    #   prop_int.check_with_label(
+    #     'x > y' => proc {|x,y| x > y}
+    #   )
+    def check_with_label(labels, count = DEFAULT_TEST_COUNT)
+      sets = check(count)
+      labels.each_pair do | label, proc |
+        sets.labeling(label, &proc)
+      end
+      return sets
+    end
+
     DEFAULT_RETRY_COUNT = 100
 
-    # @param [Float] progress
+    private
+    # @param [Float] progress 0 .. 1
     # @param [Integer] retry_count
     #
     # @return [Array<Object, Object ...>] generated values
@@ -47,27 +93,6 @@ module QueenCheck
         exception = ex
       end
       QueenCheck::Result.new(props, is_success, exception)
-    end
-
-    DEFAULT_TEST_COUNT = 100
-    def check(count = DEFAULT_TEST_COUNT)
-      results = QueenCheck::ResultReport.new
-      count.times do | n |
-        begin
-          results << self.assert(n.to_f / count)
-        rescue QueenCheck::CanNotRetryMore
-          next
-        end
-      end
-      return results
-    end
-
-    def check_with_label(labels, count = DEFAULT_TEST_COUNT)
-      sets = check(count)
-      labels.each_pair do | label, proc |
-        sets.labeling(label, &proc)
-      end
-      return sets
     end
   end
 end
