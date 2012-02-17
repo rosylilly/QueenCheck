@@ -2,21 +2,21 @@ require 'queencheck/arbitrary'
 
 module QueenCheck
   class ASCIIChar
-    arbitrary QueenCheck::Gen.choose(0, 127).bind { | c |
-      QueenCheck::Gen.unit(c.chr)
+    arbitrary QueenCheck::Gen.choose(0, 127).fmap { | c |
+      c.chr
     }
   end
 
   class Alphabet
     class LowerCase
-      arbitrary QueenCheck::Gen.choose(97, 122).bind { | c |
-        QueenCheck::Gen.unit(c.chr)
+      arbitrary QueenCheck::Gen.choose(97, 122).fmap { | c |
+        c.chr
       }
     end
 
     class UpperCase
-      arbitrary QueenCheck::Gen.choose(65, 90).bind { | c |
-        QueenCheck::Gen.unit(c.chr)
+      arbitrary QueenCheck::Gen.choose(65, 90).fmap { | c |
+        c.chr
       }
     end
 
