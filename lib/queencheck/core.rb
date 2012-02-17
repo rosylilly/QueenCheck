@@ -68,7 +68,6 @@ module QueenCheck
 
     DEFAULT_RETRY_COUNT = 100
 
-    private
     # @param [Float] progress 0 .. 1
     # @param [Integer] retry_count
     #
@@ -84,6 +83,9 @@ module QueenCheck
       }
     end
 
+    # run assert
+    # @param [Float] progress 0 .. 1
+    # @return [QueenCheck::Result] assert result
     def assert(progress)
       begin
         props = properties(progress)

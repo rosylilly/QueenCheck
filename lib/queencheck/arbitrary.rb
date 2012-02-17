@@ -68,9 +68,14 @@ end
 
 class Class
   # set arbitrary to class or get arbitrary of class
+  # @overload arbitrary
+  #   get arbitrary of class
+  #   @return [QueenCheck::Arbitrary] arbitrary of class
   # @overload arbitrary(gen)
+  #   set arbitrary of class
   #   @param [QueenCheck::Gen] gen generater of arbitrary
   # @overload arbitrary(&block)
+  #   set arbitrary of class
   #   @param [Proc] block proc of new QueenCheck::Gen instance
   # @return [QueenCheck::Arbitrary] arbitrary of class
   # @example
@@ -82,7 +87,7 @@ class Class
   #
   #   # set arbitrary
   #   Klass.arbitrary {|p, r| Klass.new }
-  # @see QueenCheck::Arbitrary
+  # @see QueenCheck.Arbitrary
   def arbitrary(gen = nil, &block)
     QueenCheck::Arbitrary(name, gen || block)
   end
