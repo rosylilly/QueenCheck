@@ -6,6 +6,7 @@
 #       x + y == y + x
 #     end
 module QueenCheck
+  # QueenCheck Version
   VERSION = '1.0.0'
 end
 
