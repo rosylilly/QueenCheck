@@ -18,7 +18,7 @@ module QueenCheck
     def is_exception?; !@exception.nil?; end
   end
 
-  class ResultSet < Array
+  class ResultReport < Array
     alias :tests :length
 
     def initialize(*args)

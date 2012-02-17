@@ -51,7 +51,7 @@ module QueenCheck
 
     DEFAULT_TEST_COUNT = 100
     def check(count = DEFAULT_TEST_COUNT)
-      results = QueenCheck::ResultSet.new
+      results = QueenCheck::ResultReport.new
       count.times do | n |
         begin
           results << self.assert(n.to_f / count)
