@@ -31,18 +31,18 @@ module QueenCheck
       label_justify = @labels.keys.map{|label| label.size}.max
       [
         "Tests: ".green + count(:all).to_s.colorize(count(:all) == count(:success) ? :green : :red),
-        "  ✓ Successes  : #{count(:success).to_s.rjust(justify)}\n#{
-          @labels.keys.map { |label|
+        "  ✓ Successes  : #{count(:success).to_s.rjust(justify)}#{
+          (@labels.empty? ?  '' : "\n") + @labels.keys.map { |label|
             "    #{label.ljust(label_justify)} : #{count(label, successes).to_s.rjust(justify)}"
           }.join("\n")
         }".green,
-        "  ✗ Failures   : #{count(:failures).to_s.rjust(justify)}\n#{
-          @labels.keys.map { |label|
+        "  ✗ Failures   : #{count(:failures).to_s.rjust(justify)}#{
+          (@labels.empty? ?  '' : "\n") + @labels.keys.map { |label|
             "    #{label.ljust(label_justify)} : #{count(label, failures).to_s.rjust(justify)}"
           }.join("\n")
         }".yellow,
-        "  ✷ Exceptions : #{count(:exception).to_s.rjust(justify)}\n#{
-          @labels.keys.map { |label|
+        "  ✷ Exceptions : #{count(:exception).to_s.rjust(justify)}#{
+          (@labels.empty? ?  '' : "\n") + @labels.keys.map { |label|
             "    #{label.ljust(label_justify)} : #{count(label, exceptions).to_s.rjust(justify)}"
           }.join("\n")
         }".red
