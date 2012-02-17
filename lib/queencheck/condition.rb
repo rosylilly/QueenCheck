@@ -3,11 +3,13 @@ module QueenCheck
   # @example
   #   QueenCheck::Alphabet::LowerCase.arbitrary.gen.where(:include? => ['a', 'b', 'c'])
   class Condition
-    # @param [Proc] condition condition proc return Boolean
+    # @yield [value] generated value
+    # @yieldreturn [Boolean] matched?
     def initialize(&condition)
       @condition = condition
     end
 
+    # @param [Object] n any value
     # @return [Boolean] condition matched
     def match?(n)
       @condition.call(n)

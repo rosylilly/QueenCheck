@@ -4,6 +4,11 @@ module QueenCheck
   class Gen
     DEFAULT_BOUND = 1000
 
+    # @param [Hash] options generater options
+    # @option options [Integer] :min bound min
+    # @option options [Integer] :max bound max
+    # @option options [Array<QueenCheck::Condition>] :conditions array of conditions
+    # @yield [p, r] progress and random int
     def initialize(options = {}, &block)
       @proc = block
 
@@ -14,7 +19,7 @@ module QueenCheck
 
     # get value form generater
     #
-    # @param progress [Intger] > 0
+    # @param [Float] progress 0 .. 1
     # @return [Array<Any, Boolean>] Any Value & Condition Matched
     def value(progress)
       v = @proc.call(progress, random)
@@ -26,11 +31,12 @@ module QueenCheck
       return [v, cond]
     end
 
-    # @return [Integer]
+    # @return [Integer] random int in @bound_min .. @bound_max
     def random
       (@bound_min + rand * (@bound_max - @bound_min)).to_i
     end
 
+    # @return [Hash] option
     def option
       {
         :min        => @bound_min,
@@ -39,14 +45,17 @@ module QueenCheck
       }
     end
 
+    # @private
     def inspect
       "<QueenCheck::Gen: {#{@proc.to_s}}>"
     end
 
     # resize bound of generater
     #
+    # @param [Integer] lo lower bound
+    # @param [Integer] hi higher bound
+    # @example
     #     QueenCheck::Gen.rand.resize(-100, 100) == QueenCheck::Gen.choose(-100, 100)
-    #
     # @return [QueenCheck::Gen]
     def resize(lo, hi)
       self.class.new(option.merge({
@@ -55,12 +64,19 @@ module QueenCheck
       }), &@proc)
     end
 
+    # bind function
+    # @yield [x] x is generated value
+    # @yieldreturn [QueenCheck::Gen]
+    # @return [QueenCheck::Gen]
     def bind
       self.class.new(option) { | p, r |
         yield(value(p)[0]).value(p)[0]
       }
     end
 
+    # @yield [x] x is generated value
+    # @yieldreturn [Object]
+    # @return [QueenCheck::Gen]
     def fmap
       bind { | x |
         self.class.unit(yield(x))
@@ -69,7 +85,12 @@ module QueenCheck
 
     # set conditions
     #
-    # @param [Hash] conditions { conditon_name => condition_param }
+    # @overload where(conditions)
+    #   @param [Hash] conditions { conditon_name => condition_param }
+    #   @option conditions [QueenCheck::Condition] any_primitive_condition see QueenCheck::Condition
+    # @overload where(){|value| ... }
+    #   @yield [value] value is generated value
+    #   @yieldreturn [Boolean]
     #
     # @see QueenCheck::Condition
     #
@@ -121,6 +142,7 @@ module QueenCheck
       }
     end
 
+    # one of generater
     # @param [Array<QueenCheck::Gen>] ary list of Generaters
     # @example
     #   QueenCheck::Gen.one_of([
@@ -137,6 +159,7 @@ module QueenCheck
       }
     end
 
+    # frequency generater
     # @param [Array<[weight[Integer], QueenCheck::Gen]>] ary list of pairs weight and generater
     # @example
     #   QueenCheck::Gen.frequency([
@@ -180,6 +203,8 @@ module QueenCheck
       }
     end
 
+    # progress generater
+    # @return [QueenCheck::Gen]
     def self.progress
       new { | p, r |
         p
@@ -214,9 +239,15 @@ module QueenCheck
       }
     end
 
-    def self.quadratic(x, y = 1, z = 0)
+    # quadratic function (general form) generater
+    # f(x) = ax^2 + bx + c
+    # @param [Integer] a factor a
+    # @param [Integer] b facror b
+    # @param [Integer] c factor c
+    # @return [QueenCheck::Gen]
+    def self.quadratic(a, b = 1, c = 0)
       new { |p, r|
-        (x * (p ** 2)) + (y * p) + z
+        (a * (p ** 2)) + (b * p) + c
       }
     end
   end
