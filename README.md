@@ -116,4 +116,4 @@ with `exception`, `labeling` and `where`
 
 please fork [QueenCheck repository](https://github.com/rosylilly/QueenCheck).
 
-__I'm waiting for the code review of you <3__
+__I'm waiting for the code review of you !__
