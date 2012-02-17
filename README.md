@@ -111,3 +111,9 @@ with `exception`, `labeling` and `where`
     #     x = y  :  0
     #     x is 0 :  0
     #     y is 0 :  0
+
+## Help me
+
+please fork [QueenCheck repository](https://github.com/rosylilly/QueenCheck).
+
+__I'm waiting for the code review of you <3__
