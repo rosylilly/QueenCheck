@@ -16,5 +16,6 @@ end
 
 guard 'yard', :plugin => 'yard-tomdoc' do
   watch(%r{lib/.+\.rb})
+  watch(%r{README})
 end
 
