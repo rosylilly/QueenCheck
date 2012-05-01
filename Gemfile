@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem "colorize", ">= 0.5.8"
+gem "colorize", "~> 0.5"
 
 group :development, :test do
   gem "rake", ">= 0.9.2.2"
